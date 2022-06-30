@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:auto_route/auto_route.dart';
+import 'screens/home.dart';
 
-part 'app_router.gr.dart';      
-class App extends StatelessWidget {      
-  // make sure you don't initiate your router          
-  // inside of the build function.          
-  final _appRouter = AppRouter();      
-      
-  @override      
-  Widget build(BuildContext context){      
-    return MaterialApp.router(      
-      routerDelegate: _appRouter.delegate(),      
-      routeInformationParser: _appRouter.defaultRouteParser(),      
-    );      
-  }      
-} 
+part 'router.gr.dart';
+
+@MaterialAutoRouter(
+  replaceInRouteName: 'Page,Route',
+  routes: <AutoRoute>[
+    AutoRoute(page: HomePage, initial: true),
+  ],
+)
+class $AppRouter {}
+
+class AppRouter extends _$$AppRouter {}

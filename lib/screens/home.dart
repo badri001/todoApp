@@ -5,11 +5,11 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/constants.dart';
-import 'package:todo/custom_snack_bar.dart';
+import 'package:todo/widgets/custom_snack_bar.dart';
 import 'package:todo/task_adapter.dart';
-import 'package:todo/task_provider.dart';
+import 'package:todo/provider/task_provider.dart';
 
-import 'list_drawer.dart';
+import '../widgets/list_drawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

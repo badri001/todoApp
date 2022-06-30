@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/task_adapter.dart';
-import 'package:todo/task_provider.dart';
+import 'package:todo/provider/task_provider.dart';
 
-import 'constants.dart';
+import '../constants.dart';
 
 class ListDrawer extends StatelessWidget {
   const ListDrawer({
