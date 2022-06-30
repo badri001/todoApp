@@ -1,9 +1,11 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/constants.dart';
+import 'package:todo/custom_snack_bar.dart';
 import 'package:todo/task_adapter.dart';
 import 'package:todo/task_provider.dart';
 
@@ -69,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                   TextButton(
                       onPressed: () {
                         TaskAdapter data = taskProvider.savedTask.getAt(6);
-                        print(data.subTasks);
+                        log(data.subTasks.toString());
                       },
                       child: const Text("Print data"))
                 ],
@@ -197,11 +199,24 @@ class _HomePageState extends State<HomePage> {
                         ),
                         floatingActionButton: FloatingActionButton(
                           onPressed: () {
-                            var newTask = taskProvider.newTask;
-                            newTask.title = taskTitle.text;
-                            taskProvider.savedTask.add(newTask);
-                            taskProvider.clear();
-                            Navigator.of(context).pop();
+                            if (taskTitle.text.isNotEmpty) {
+                              var newTask = taskProvider.newTask;
+                              newTask.title = taskTitle.text;
+                              taskProvider.savedTask.add(newTask);
+                              taskProvider.clear();
+                              taskProvider.notify();
+                              taskTitle.clear();
+                              subTasks.clear();
+                              Navigator.of(context).pop();
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  MySnackBar.createSnackBar(
+                                      bgColor: Colors.red,
+                                      iconColor: Colors.white,
+                                      textColor: Colors.white,
+                                      text: "Title is a mandatory field",
+                                      icon: Icons.info));
+                            }
                           },
                           child: const Icon(Icons.check),
                         ),

@@ -15,7 +15,7 @@ class TaskProvider with ChangeNotifier {
   }
 
   clear() {
-    newTask = TaskAdapter(subTasks: [], isDone: []);
+    newTask = TaskAdapter(subTasks: [], isDone: [], title: "");
     notifyListeners();
   }
 }
