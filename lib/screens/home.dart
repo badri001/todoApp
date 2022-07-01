@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
               builder: (context) => Consumer<TaskProvider>(
                       builder: (BuildContext context, taskProvider, _) {
                     return FractionallySizedBox(
-                      heightFactor: 0.81,
+                      heightFactor: 0.83,
                       child: Scaffold(
                         body: GestureDetector(
                           onTap: () => FocusScope.of(context).unfocus(),
