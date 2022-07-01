@@ -127,51 +127,49 @@ class _HomePageState extends State<HomePage> {
                                   textAlign: TextAlign.left,
                                 ),
                                 ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        taskProvider.newTask.subTasks.length,
-                                    itemBuilder:
-                                        ((BuildContext context, index) {
-                                      return ListTile(
-                                        dense: true,
-                                        contentPadding: EdgeInsets.zero,
-                                        leading: Checkbox(
-                                          value: taskProvider
-                                              .newTask.isDone[index],
-                                          onChanged: (bool? value) {
-                                            taskProvider.newTask.isDone[index] =
-                                                !taskProvider
-                                                    .newTask.isDone[index];
-                                            taskProvider.notify();
-                                          },
-                                        ),
-                                        title: TextField(
-                                          controller: subTasks[index],
-                                          onChanged: (value) {
-                                            taskProvider.newTask
-                                                .subTasks[index] = value;
-                                            taskProvider.notify();
-                                          },
-                                          decoration: const InputDecoration(
-                                              border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(8)))),
-                                        ),
-                                        trailing: IconButton(
-                                          onPressed: () {
-                                            taskProvider.newTask.subTasks
-                                                .removeAt(index);
-                                            taskProvider.newTask.isDone
-                                                .removeAt(index);
-                                            taskProvider.notify();
-                                          },
-                                          icon: const Icon(Icons.delete),
-                                        ),
-                                      );
-                                    })),
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      taskProvider.newTask.subTasks.length,
+                                  itemBuilder: ((BuildContext context, index) {
+                                    return ListTile(
+                                      dense: true,
+                                      contentPadding: EdgeInsets.zero,
+                                      leading: Checkbox(
+                                        value:
+                                            taskProvider.newTask.isDone[index],
+                                        onChanged: (bool? value) {
+                                          taskProvider.newTask.isDone[index] =
+                                              !taskProvider
+                                                  .newTask.isDone[index];
+                                          taskProvider.notify();
+                                        },
+                                      ),
+                                      title: TextField(
+                                        controller: subTasks[index],
+                                        onChanged: (value) {
+                                          taskProvider.newTask.subTasks[index] =
+                                              value;
+                                          taskProvider.notify();
+                                        },
+                                        decoration: const InputDecoration(
+                                            border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8)))),
+                                      ),
+                                      trailing: IconButton(
+                                        onPressed: () {
+                                          taskProvider.newTask.subTasks
+                                              .removeAt(index);
+                                          taskProvider.newTask.isDone
+                                              .removeAt(index);
+                                          taskProvider.notify();
+                                        },
+                                        icon: const Icon(Icons.delete),
+                                      ),
+                                    );
+                                  }),
+                                ),
                                 const SizedBox(
                                   height: 20,
                                 ),
@@ -207,7 +205,9 @@ class _HomePageState extends State<HomePage> {
                               taskProvider.notify();
                               taskTitle.clear();
                               subTasks.clear();
-                              Navigator.of(context).pop();
+                              taskProvider.notify();
+                              getData();
+                              Navigator.pop(context);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   MySnackBar.createSnackBar(

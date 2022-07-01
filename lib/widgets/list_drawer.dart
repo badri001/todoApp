@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/screens/task_view.dart';
 import 'package:todo/task_adapter.dart';
 import 'package:todo/provider/task_provider.dart';
+import 'package:todo/task_model.dart';
 
 import '../constants.dart';
 
@@ -22,7 +24,6 @@ class ListDrawer extends StatelessWidget {
                 child: SizedBox(
                   height: 60,
                   child: ListTile(
-                    onTap: () {},
                     leading: IconButton(
                         onPressed: () => Navigator.pop(context),
                         icon: const Icon(
@@ -50,9 +51,18 @@ class ListDrawer extends StatelessWidget {
                 itemBuilder: (BuildContext context, index) {
                   TaskAdapter data = taskProvider.savedTask.getAt(index);
                   return ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TaskView(data: data)));
+                    },
                     title: Text(data.title ?? "No Title"),
+                    subtitle: Text("has ${data.subTasks.length} subtasks"),
                   );
                 }),
+
+            ///close tile
             ListTile(
               onTap: () => Navigator.pop(context),
               title:
