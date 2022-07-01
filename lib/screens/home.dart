@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/constants.dart';
 import 'package:todo/widgets/custom_snack_bar.dart';
@@ -31,7 +29,7 @@ class _HomePageState extends State<HomePage> {
     // final documentDirectory = await getApplicationDocumentsDirectory();
     // Hive.init(documentDirectory.path);
 
-    taskProvider.savedTask = await Hive.openBox('myTasks');
+    await taskProvider.getSaveTask();
     //taskProvider.savedTask = taskData;
     // taskData.setState(() {
     //   isLoading = false;
@@ -63,17 +61,12 @@ class _HomePageState extends State<HomePage> {
             )
           : Center(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Center(
                     child: Text(
                         "Currently there are ${taskProvider.savedTask.length} tasks to do"),
                   ),
-                  TextButton(
-                      onPressed: () {
-                        TaskAdapter data = taskProvider.savedTask.getAt(6);
-                        log(data.subTasks.toString());
-                      },
-                      child: const Text("Print data"))
                 ],
               ),
             ),
@@ -111,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                                 TextField(
                                   controller: taskTitle,
                                   onChanged: (value) {
-                                    taskProvider.newTask.title = value;
+                                    taskProvider.taskForm.title = value;
                                   },
                                   autocorrect: true,
                                   decoration: const InputDecoration(
@@ -126,71 +119,81 @@ class _HomePageState extends State<HomePage> {
                                   "You can list your sub tasks here",
                                   textAlign: TextAlign.left,
                                 ),
-                                ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      taskProvider.newTask.subTasks.length,
-                                  itemBuilder: ((BuildContext context, index) {
-                                    return ListTile(
-                                      dense: true,
-                                      contentPadding: EdgeInsets.zero,
-                                      leading: Checkbox(
-                                        value:
-                                            taskProvider.newTask.isDone[index],
-                                        onChanged: (bool? value) {
-                                          taskProvider.newTask.isDone[index] =
-                                              !taskProvider
-                                                  .newTask.isDone[index];
-                                          taskProvider.notify();
-                                        },
-                                      ),
-                                      title: TextField(
-                                        controller: subTasks[index],
-                                        onChanged: (value) {
-                                          taskProvider.newTask.subTasks[index] =
-                                              value;
-                                          taskProvider.notify();
-                                        },
-                                        decoration: const InputDecoration(
-                                            border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(8)))),
-                                      ),
-                                      trailing: IconButton(
-                                        onPressed: () {
-                                          taskProvider.newTask.subTasks
-                                              .removeAt(index);
-                                          taskProvider.newTask.isDone
-                                              .removeAt(index);
-                                          taskProvider.notify();
-                                        },
-                                        icon: const Icon(Icons.delete),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: kPrimaryColor,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8),
-                                        ),
-                                      ),
+                                Column(
+                                  children: [
+                                    ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: taskProvider
+                                            .taskForm.subTasks.length,
+                                        itemBuilder:
+                                            ((BuildContext context, index) {
+                                          return ListTile(
+                                            dense: true,
+                                            contentPadding: EdgeInsets.zero,
+                                            leading: Checkbox(
+                                              value: taskProvider
+                                                  .taskForm.isDone[index],
+                                              onChanged: (bool? value) {
+                                                taskProvider.taskForm
+                                                        .isDone[index] =
+                                                    !taskProvider
+                                                        .taskForm.isDone[index];
+                                                taskProvider.notify();
+                                              },
+                                            ),
+                                            title: TextField(
+                                              controller: subTasks[index],
+                                              onChanged: (value) {
+                                                taskProvider.taskForm
+                                                    .subTasks[index] = value;
+                                                taskProvider.notify();
+                                              },
+                                              decoration: const InputDecoration(
+                                                  border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  8)))),
+                                            ),
+                                            trailing: IconButton(
+                                              onPressed: () {
+                                                taskProvider.taskForm.subTasks
+                                                    .removeAt(index);
+                                                taskProvider.taskForm.isDone
+                                                    .removeAt(index);
+                                                taskProvider.notify();
+                                              },
+                                              icon: const Icon(Icons.delete),
+                                            ),
+                                          );
+                                        })),
+                                    const SizedBox(
+                                      height: 20,
                                     ),
-                                    onPressed: () {
-                                      subTasks.add(TextEditingController());
-                                      setState(() {
-                                        taskProvider.newTask.subTasks.add("");
-                                        taskProvider.newTask.isDone.add(false);
-                                      });
-                                      taskProvider.notify();
-                                    },
-                                    child: const Text("+ Add Task"))
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: kPrimaryColor,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8),
+                                            ),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          subTasks.add(TextEditingController());
+                                          setState(() {
+                                            taskProvider.taskForm.subTasks
+                                                .add("");
+                                            taskProvider.taskForm.isDone
+                                                .add(false);
+                                          });
+                                          taskProvider.notify();
+                                        },
+                                        child: const Text("+ Add Task")),
+                                  ],
+                                )
                               ],
                             ),
                           ),
@@ -198,16 +201,16 @@ class _HomePageState extends State<HomePage> {
                         floatingActionButton: FloatingActionButton(
                           onPressed: () {
                             if (taskTitle.text.isNotEmpty) {
-                              var newTask = taskProvider.newTask;
-                              newTask.title = taskTitle.text;
-                              taskProvider.savedTask.add(newTask);
+                              var taskForm = taskProvider.taskForm;
+                              taskForm.title = taskTitle.text;
+                              taskProvider.savedTask.add(taskForm);
                               taskProvider.clear();
                               taskProvider.notify();
                               taskTitle.clear();
                               subTasks.clear();
                               taskProvider.notify();
                               getData();
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   MySnackBar.createSnackBar(

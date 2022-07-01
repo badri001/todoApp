@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:todo/task_adapter.dart';
 import 'package:todo/provider/task_provider.dart';
 
-import 'screens/home.dart';
 import 'router.dart';
 
 void main() async {
@@ -22,6 +21,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final _appRouter = AppRouter();
+
 
   // This widget is the root of your application.
   @override
