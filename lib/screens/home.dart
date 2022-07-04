@@ -51,6 +51,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      onDrawerChanged: (isOpen) {
+        if (!isOpen) {
+          getData();
+        }
+      },
       drawer: const ListDrawer(),
       appBar: AppBar(
         title: const Text("Its time TO-DO"),

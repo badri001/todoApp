@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/screens/home.dart';
+
+import 'package:todo/screens/motivation.dart';
 import 'package:todo/screens/task_view.dart';
 import 'package:todo/task_adapter.dart';
 import 'package:todo/provider/task_provider.dart';
@@ -37,15 +38,6 @@ class ListDrawer extends StatelessWidget {
                     ),
                   ),
                 )),
-            // const ListTile(
-            //   title: Text("list 1"),
-            // ),
-            // const ListTile(
-            //   title: Text("list 2"),
-            // ),
-            // const ListTile(
-            //   title: Text("list 3"),
-            // ),
             ListView.builder(
                 shrinkWrap: true,
                 itemCount: taskProvider.savedTask.length,
@@ -72,9 +64,13 @@ class ListDrawer extends StatelessWidget {
                   );
                 }),
             ListTile(
-              onTap: () => Navigator.pop(context),
-              title:
-                  const Text("Close", style: TextStyle(color: kPrimaryColor)),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MotivationScreen())),
+              leading: const Icon(Icons.warning_amber, color: Colors.redAccent),
+              title: const Text("MOTIVATE ME",
+                  style: TextStyle(color: Colors.redAccent)),
             )
           ],
         ),

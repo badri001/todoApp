@@ -16,7 +16,7 @@ class TaskProvider with ChangeNotifier {
   }
 
   getSaveTask() async {
-    print(savedTask.runtimeType);
+    // print(savedTask.runtimeType);
     savedTask = await Hive.openBox('myTasks');
     notifyListeners();
   }
